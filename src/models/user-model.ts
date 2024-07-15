@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   profilePic: {
-    type: Boolean,
+    type: String,
     required: true,
   },
   isActive: {
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 
 if(mongoose.models && mongoose.models["users"])
 {
-  delete mongoose.models['users']
+  delete mongoose.models["users"]
 }
 
 const UserModel = mongoose.model("users", userSchema);
