@@ -1,7 +1,7 @@
 import { UserType } from "@/interfaces";
 import { Drawer } from "antd";
 import { BedDouble, GitGraph, Home, Hotel, List, User } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import React from "react";
 
@@ -13,49 +13,58 @@ function Sidebar({ showSideBar, setShowSideBar, loggedInUserData }: {
 
   const iconSize = 18;
   const router = useRouter();
+  const pathname = usePathname();
 
   const userMenuItems: any[] = [
     {
       name: "Home",
       icon: <Home size={iconSize} />,
-      onClick: () => router.push("/")
+      onClick: () => router.push("/"),
+      isActive: pathname === "/",
     },
     {
       name: "Bookings",
       icon: <List size={iconSize} />,
-      onClick: () => router.push("/user/bookings")
+      onClick: () => router.push("/user/bookings"),
+      isActive: pathname === "/user/bookings",
     },
     {
       name: "Profile",
       icon: <User size={iconSize} />,
-      onClick: () => router.push("/user/profile")
+      onClick: () => router.push("/user/profile"),
+      isActive: pathname === "/user/profile",
     },
   ]
   const adminMenuItems: any[] = [
     {
       name: "Home",
       icon: <Home size={iconSize} />,
-      onClick: () => router.push("/")
+      onClick: () => router.push("/"),
+      isActive: pathname === "/",
     },
     {
       name: "Bookings",
       icon: <List size={iconSize} />,
-      onClick: () => router.push("/admin/bookings")
+      onClick: () => router.push("/admin/bookings"),
+      isActive: pathname === "/admin/bookings",
     },
     {
       name: "Hotels",
       icon: <Hotel size={iconSize} />,
-      onClick: () => router.push("/admin/hotels")
+      onClick: () => router.push("/admin/hotels"),
+      isActive: pathname === "/admin/hotels",
     },
     {
       name: "Rooms",
       icon: <BedDouble size={iconSize} />,
-      onClick: () => router.push("/admin/rooms")
+      onClick: () => router.push("/admin/rooms"),
+      isActive: pathname === "/admin/rooms",
     },
     {
       name: "Reports",
       icon: <GitGraph size={iconSize} />,
-      onClick: () => router.push("/admin/reports")
+      onClick: () => router.push("/admin/reports"),
+      isActive: pathname === "/admin/reports",
     },
   ]
 
@@ -67,7 +76,8 @@ function Sidebar({ showSideBar, setShowSideBar, loggedInUserData }: {
     <Drawer open={showSideBar} onClose={() => setShowSideBar(false)} closable>
       <div className="flex flex-col gap-14">
       {menuItemsToShow.map((item, index) => (
-        <div className="flex gap-4 items-center text-gray-700 cursor-pointer"
+        <div className={`flex gap-4 items-center text-gray-700 cursor-pointer px-7 py-3 rounded
+           ${item.isActive ? 'bg-gray-700 text-white' : '' }`}
           key={index}
           onClick={() => {
             item.onClick();
