@@ -4,9 +4,14 @@ import Header from "./header";
 import { GetCurrentUserFromMongoDB } from "@/server-actions/users";
 import { UserType } from "@/interfaces";
 import { message } from "antd";
+import { usePathname } from "next/navigation";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [loggedInUserData, setLoggedInUserData] = React.useState<UserType | null>(null)
+
+  const pathname = usePathname();
+
+  const isAuthRoute = pathname.includes("/sign-in") || pathname.includes("/sign-up");
 
   const getUserData = async () => {
     try {
@@ -23,11 +28,15 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   }
 
   React.useEffect(() => {
-    if (!loggedInUserData) {
-      getUserData()
+    if (!loggedInUserData && !isAuthRoute) {
+      getUserData();
 
     }
-  }, [])
+  }, []);
+
+  if(isAuthRoute){
+    return children;
+  }
 
   return (
     <div>

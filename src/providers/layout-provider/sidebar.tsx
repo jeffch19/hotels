@@ -1,4 +1,5 @@
 import { UserType } from "@/interfaces";
+import { useAuth } from "@clerk/nextjs";
 import { Drawer } from "antd";
 import { BedDouble, GitGraph, Home, Hotel, List, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,6 +15,14 @@ function Sidebar({ showSideBar, setShowSideBar, loggedInUserData }: {
   const iconSize = 18;
   const router = useRouter();
   const pathname = usePathname();
+
+  const {signOut} = useAuth();
+
+  const onLogout = async () => {
+    await signOut();
+    setShowSideBar(false);
+    router.push("/sign-in");
+  };
 
   const userMenuItems: any[] = [
     {
@@ -88,6 +97,11 @@ function Sidebar({ showSideBar, setShowSideBar, loggedInUserData }: {
           <span className="mt-[2px]">{item.name}</span>
         </div>
       ))}
+
+
+      <span className="text-center cursor-pointer text-red-500" onClick={onLogout}>
+        Logout
+      </span>
       </div>
     </Drawer>
   )
