@@ -1,18 +1,38 @@
 'use client'
 import { uploadImageToFirebaseAndReturnUrls } from "@/helpers/image-upload";
+import { AddHotel } from "@/server-actions/hotels";
 import { Button, Form, Input, message, Upload } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-function HotelForm() {
+function HotelForm({
+  type = "add"
+} : {
+  type: string
+}) {
   const [uploadedFiles, setUploadedFiles] = useState([]) as any[];
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
 
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
       values.media = await uploadImageToFirebaseAndReturnUrls(uploadedFiles);
-      console.log("Success:", values);
+      let response:any = null;
+      // console.log("Success:", values);
+      if(type === "add"){
+        response = await AddHotel(values);
+      }
+
+      if(response.success){
+        message.success("Hotel added successfully");
+        router.push("/admin/hotels");
+      }
+
+      if(!response.success) {
+        message.error(response.error);
+      }
     } catch (error: any) {
       message.error(error.messasge);
     } finally {
