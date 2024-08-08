@@ -22,7 +22,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
       const response = await GetCurrentUserFromMongoDB()
       if (response.success) {
         setLoggedInUserData(response.data);
-        console.log(response.data)
+        // console.log(response.data)
       } else {
         throw new Error(response.message)
       }
