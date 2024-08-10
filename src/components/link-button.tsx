@@ -7,7 +7,7 @@ import React from 'react'
 function LinkButton({title , path} : {title: string , path: string}){
  const router = useRouter();
   return(
-    <Button onClick={() => router.push(path)}>{title}</Button>
+    <Button type='primary' onClick={() => router.push(path)}>{title}</Button>
   )
 }
 
