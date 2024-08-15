@@ -13,11 +13,33 @@ export const AddHotel = async(payload:any) => {
     revalidatePath("/admin/hotels");
     return {
       success: true,
+      message: "Hotel addded successfully",
     }
   } catch (error:any) {
     return {
       success: false,
       error: error.message,
     }
+  }
+}
+
+export const EditHotel = async ({
+  hotelId, payload
+}: {
+  hotelId: string;
+  payload: any;
+}) => {
+  try{
+    await HotelModel.findByIdAndUpdate(hotelId, payload);
+    revalidatePath("/admin/hotels");
+    return {
+      success: true,
+      message: "Hotel Updated Successfully",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message,
+    };
   }
 }

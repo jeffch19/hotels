@@ -1,14 +1,16 @@
 'use client'
 import { uploadImageToFirebaseAndReturnUrls } from "@/helpers/image-upload";
-import { AddHotel } from "@/server-actions/hotels";
+import { AddHotel, EditHotel } from "@/server-actions/hotels";
 import { Button, Form, Input, message, Upload } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function HotelForm({
-  type = "add"
+  type = "add",
+  initialData,
 } : {
-  type: string
+  type: string,
+  initialData? : any
 }) {
   const [uploadedFiles, setUploadedFiles] = useState([]) as any[];
   const [loading, setLoading] = useState(false);
@@ -23,10 +25,15 @@ function HotelForm({
       // console.log("Success:", values);
       if(type === "add"){
         response = await AddHotel(values);
+      } else {
+        response = await EditHotel({
+          hotelId: initialData._id,
+          payload: values,
+        });
       }
 
       if(response.success){
-        message.success("Hotel added successfully");
+        message.success(response.message);
         router.push("/admin/hotels");
       }
 
@@ -42,7 +49,7 @@ function HotelForm({
 
   return (
     <div>
-      <Form className="grid grid-cols-3 mt-5 gap-5" layout="vertical" onFinish={onFinish}>
+      <Form className="grid grid-cols-3 mt-5 gap-5" layout="vertical" onFinish={onFinish} initialValues={initialData}>
         <Form.Item className="col-span-3" label="Hotel Name" name='name' rules={[{ required: true, message: "Please input hotel name!" }]}>
           <Input placeholder="Hotel Name" />
         </Form.Item>
