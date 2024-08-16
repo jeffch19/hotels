@@ -43,3 +43,19 @@ export const EditHotel = async ({
     };
   }
 }
+
+export const DeleteHotel = async (hotelId: string) => {
+  try {
+    await HotelModel.findByIdAndDelete(hotelId);
+    revalidatePath("/admin/hotels");
+    return {
+      success: true,
+      message: "Hotel Deleted Successfully"
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message,
+    }
+  }
+}

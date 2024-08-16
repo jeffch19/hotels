@@ -119,7 +119,9 @@ function HotelForm({
 
         <div className="col-span-3 flex justify-end gap-5">
           <Button disabled={loading} onClick={() => router.push("/admin/hotels")}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>Submit</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {type === "add" ? "Add" : "Update"}
+          </Button>
         </div>
       </Form>
     </div>
