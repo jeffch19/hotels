@@ -67,7 +67,7 @@ function Sidebar({ showSideBar, setShowSideBar, loggedInUserData }: {
       name: "Rooms",
       icon: <BedDouble size={iconSize} />,
       onClick: () => router.push("/admin/rooms"),
-      isActive: pathname === "/admin/rooms",
+      isActive: pathname.includes("/admin/rooms"),
     },
     {
       name: "Reports",
