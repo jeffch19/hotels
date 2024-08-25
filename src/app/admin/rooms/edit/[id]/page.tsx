@@ -1,8 +1,25 @@
+import PageTitle from "@/components/page-title";
+import HotelModel from "@/models/hotel-model";
+import RoomModel from "@/models/room-model";
 import React from "react";
+import RoomsForm from "../../_common/rooms-form";
 
-function EditRoomPage() {
+async function EditRoomPage({
+  params,
+} : {
+  params: {
+    id: string;
+  };
+}) {
+  const response = await RoomModel.findById(params.id);
+  const room = JSON.parse(JSON.stringify(response));
+  const hotelResponse = await HotelModel.find();
+  const hotels = JSON.parse(JSON.stringify(hotelResponse));
   return (
-    <div>EditRoomPage</div>
+    <div>
+      <PageTitle title="Edit Room" />
+      <RoomsForm initialData={room} type="edit" hotels={hotels} />
+    </div>
   )
 }
 
