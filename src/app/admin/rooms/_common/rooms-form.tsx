@@ -119,7 +119,7 @@ function RoomsForm({
         <Upload
           listType="picture-card"
           beforeUpload={(file) => {
-            setUploadedFiles([...uploadedFiles, file]);
+            setUploadedFiles((prev:any) => [...prev, file]);
             return false;
           }}
           multiple
