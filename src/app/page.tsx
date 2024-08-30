@@ -1,13 +1,13 @@
-import { connectMongoDB } from "@/config/db";
-import { GetCurrentUserFromMongoDB } from "@/server-actions/users";
-connectMongoDB();
+import { Suspense } from "react";
+import RoomsData from "./_common/rooms-data";
+import Spinner from "@/components/spinner";
 
 export default async function Home() {
-   await GetCurrentUserFromMongoDB();
-
   return (
     <div>
-      Homepage
+      <Suspense fallback={<Spinner />}>
+        <RoomsData />
+      </Suspense>
 
     </div>
   );

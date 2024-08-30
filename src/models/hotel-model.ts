@@ -30,7 +30,7 @@ const hotelSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-if(mongoose.models&&mongoose.models['hotels']){
+if(mongoose.models && mongoose.models['hotels']){
   delete mongoose.models['hotels'];
 }
 
