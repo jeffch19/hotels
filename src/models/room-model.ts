@@ -38,7 +38,7 @@ const roomSchema = new mongoose.Schema({
   timestamps: true,
 })
 
-
+require("./hotel-model");
 if(mongoose.models && mongoose.models['rooms']){
   delete mongoose.models['rooms']
 }

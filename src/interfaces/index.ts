@@ -30,6 +30,7 @@ export interface RoomType {
   rentPerDay: number;
   type: string;
   roomNumber: number;
+  bedrooms : number;
   amenities: string;
   media: string[];
   createdAt: string;

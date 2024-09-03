@@ -1,0 +1,43 @@
+import { RoomType } from '@/interfaces'
+import { Image } from 'antd'
+import React from 'react'
+
+function RoomInfo({room} : {
+  room : RoomType
+}) {
+
+
+  const renderRoomProperty = (label: string, value: string) => {
+    return (
+      <div className='flex flex-col text-gray-600'>
+        <span className='text-xs'>{label}</span>
+        <span className='text-sm font-semibold'>{value}</span>
+      </div>
+    )
+  }
+
+
+
+  return (
+    <div>
+      <div className='flex flex-wrap gap-7'>
+        {room.media.map((media, index) => (
+          <Image src={media} key={index} width={200} height={170} className='rounded-lg' />
+        ))}
+      </div>
+
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-7 mt-7 capitalize'>
+        {renderRoomProperty("Room Name", room.name)}
+        {renderRoomProperty("Room Type", room.type)}
+        {renderRoomProperty("Room Number", room.roomNumber.toString())}
+        {renderRoomProperty("Cost Per Night", room.rentPerDay.toString())}
+        {renderRoomProperty("Bedrooms", room.bedrooms.toString())}
+        {renderRoomProperty("Owner", room.hotel.owner)}
+        {renderRoomProperty("Email", room.hotel.email)}
+        {renderRoomProperty("Phone", room.hotel.phone)}
+      </div>
+    </div>
+  )
+}
+
+export default RoomInfo
