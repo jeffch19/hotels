@@ -2,8 +2,8 @@ import { RoomType } from '@/interfaces'
 import { Image } from 'antd'
 import React from 'react'
 
-function RoomInfo({room} : {
-  room : RoomType
+function RoomInfo({ room }: {
+  room: RoomType
 }) {
 
 
@@ -35,6 +35,20 @@ function RoomInfo({room} : {
         {renderRoomProperty("Owner", room.hotel.owner)}
         {renderRoomProperty("Email", room.hotel.email)}
         {renderRoomProperty("Phone", room.hotel.phone)}
+      </div>
+
+      <div className='mt-7'>
+        <span className='text-xs'>Amenities</span>
+        <div className='flex flex-wrap gap-7 mt-2'>
+          {room.amenities.split(",").map((amenity, index) => (
+            <div
+              key={index}
+              className='bg-gray-200 text-gray-600 rounded-md px-3 py-1 text-xs capitalize'
+            >
+              {amenity}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
