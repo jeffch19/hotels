@@ -1,3 +1,4 @@
+'use server'
 import { connectMongoDB } from "@/config/db";
 import BookingModel from "@/models/booking-model";
 
