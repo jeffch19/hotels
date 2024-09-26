@@ -1,6 +1,7 @@
 'use client'
 import { RoomType } from '@/interfaces'
 import { CheckRoomAvailability } from '@/server-actions/bookings';
+import { GetStripeClientSecretKey } from '@/server-actions/payments';
 import { Button, Form, Input, message } from 'antd'
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
@@ -10,6 +11,10 @@ function Checkout({ room }: { room: RoomType }) {
   const [checkOut, setCheckOut] = useState('');
   const [loading, setLoading] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
+  const [totalDays, setTotalDays] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [clientSecret, setClientSecret] = useState("");
+
 
 
   const checkAvailability = async () => {
@@ -22,6 +27,9 @@ function Checkout({ room }: { room: RoomType }) {
       if (response.success) {
         setIsAvailable(true);
         message.success("Room is available")
+        const totalDaysTemp = dayjs(checkOut).diff(dayjs(checkIn), 'day');
+        setTotalDays(totalDaysTemp);
+        setTotalAmount(totalDaysTemp * room.rentPerDay);
       } else {
         setIsAvailable(false);
         message.error("Room is not available")
@@ -32,7 +40,21 @@ function Checkout({ room }: { room: RoomType }) {
   }
 
 
-  const onBookRoom = () => {}
+  const onBookRoom = async () => {
+    try {
+      setLoading(true);
+      const response = await GetStripeClientSecretKey({ amount: totalAmount})
+      if(response.success){
+        setClientSecret(response.data)
+      } else {
+        message.error(response.message)
+      }
+    } catch (error: any) {
+      message.error(error.message)
+    } finally {
+      setLoading(false);
+    }
+   }
 
 
   useEffect(() => {
@@ -60,25 +82,37 @@ function Checkout({ room }: { room: RoomType }) {
           />
         </Form.Item>
 
-        <Button 
-        type='primary' 
-        className='w-full' 
-        disabled={!checkIn || !checkOut || isAvailable} 
-        loading={loading}
-        onClick={checkAvailability}
+        <Button
+          type='primary'
+          className='w-full'
+          disabled={!checkIn || !checkOut || isAvailable}
+          loading={loading}
+          onClick={checkAvailability}
         >
           Check Availability
         </Button>
 
 
-        {isAvailable && <Button 
-        type='primary' 
-        className='w-full' 
-        loading={loading}
-        onClick={onBookRoom}
-        >
-          Book Room
-        </Button>}
+        {isAvailable && (
+          <>
+          <div className='flex justify-between'>
+            <span>Total Days</span>
+            <span>{totalDays}</span>
+          </div>
+          <div className='flex justify-between'>
+            <span>Total Amount</span>
+            <span>${totalAmount}</span>
+          </div>
+            <Button
+              type='primary'
+              className='w-full'
+              loading={loading}
+              onClick={onBookRoom}
+            >
+              Book Room
+            </Button>
+          </>
+        )}
 
       </Form>
     </div>
