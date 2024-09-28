@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.2.2",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.5.0",
     "antd": "^5.19.1",
     "dayjs": "^1.11.12",
     "firebase": "^10.12.5",
