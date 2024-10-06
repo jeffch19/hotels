@@ -1,6 +1,7 @@
 'use server'
 import { connectMongoDB } from "@/config/db";
 import BookingModel from "@/models/booking-model";
+import { GetCurrentUserFromMongoDB } from "./users";
 
 connectMongoDB()
 
@@ -46,5 +47,23 @@ export const CheckRoomAvailability = async({
     success: false,
     message: error.message,
     };
+  }
+}
+
+export const BookRoom = async (payload) => {
+  try {
+    const userResponse = await GetCurrentUserFromMongoDB();
+    payload.user = userResponse.data._id;
+    const booking = new BookingModel(payload);
+    await booking.save();
+
+    return{
+      success: true,
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    }
   }
 }

@@ -2,6 +2,8 @@ import { RoomType } from "@/interfaces";
 import { Button, message, Modal } from "antd";
 import React, { useState } from "react";
 import { useStripe, useElements, PaymentElement, AddressElement } from '@stripe/react-stripe-js';
+import { BookRoom } from "@/server-actions/bookings";
+import { useRouter } from "next/navigation";
 
 function PaymentModal({
   room,
@@ -23,6 +25,7 @@ function PaymentModal({
   const [loading, setLoading] = useState(false)
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // We don't want to let default form submission happen here,
@@ -55,6 +58,20 @@ function PaymentModal({
         // methods like iDEAL, your customer will be redirected to an intermediate
         // site first to authorize the payment, then redirected to the `return_url`.
         message.success("Payment Successful")
+        const bookingPayload = {
+          hotel: room.hotel._id,
+          room: room._id,
+          checkInDate,
+          checkOutDate,
+          totalAmount,
+          totalDays,
+          paymentId : result.paymentIntent.id
+        }
+
+        await BookRoom(bookingPayload);
+        message.success("Room booked successfully");
+        setShowPaymentModal(false);
+        router.push("/user/bookings")
       }
     } catch (error: any) {
       message.error(error.message)
