@@ -30,6 +30,12 @@ export const CheckRoomAvailability = async({
             $lte: reqCheckOutDate
           },
         },
+        {
+          $and : [
+            { checkInDate: { $lte: reqCheckInDate} },
+            { checkOutDate: { $gte: reqCheckOutDate} }
+          ]
+        }
       ],
     });
 
@@ -50,7 +56,7 @@ export const CheckRoomAvailability = async({
   }
 }
 
-export const BookRoom = async (payload) => {
+export const BookRoom = async (payload: any) => {
   try {
     const userResponse = await GetCurrentUserFromMongoDB();
     payload.user = userResponse.data._id;
