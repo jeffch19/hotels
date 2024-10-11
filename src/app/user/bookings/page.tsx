@@ -1,8 +1,18 @@
+import PageTitle from "@/components/page-title";
+import BookingModel from "@/models/booking-model";
+import { GetCurrentUserFromMongoDB } from "@/server-actions/users";
 import React from "react";
+import UserBookingsTable from "./_common/user-bookings-table";
 
-function BookingsPage() {
+async function BookingsPage() {
+  const userResponse = await GetCurrentUserFromMongoDB();
+  const userBookingResponse = await BookingModel.find({ user: userResponse.data._id }).populate("room").populate("hotel").sort({ createdAt: -1 })
+  const userBookings = JSON.parse(JSON.stringify(userBookingResponse));
   return (
-    <div>BookingsPage</div>
+    <div>
+      <PageTitle title = "My Bookings" />
+      <UserBookingsTable bookings={userBookings} />
+    </div>
   )
 }
 

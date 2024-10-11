@@ -36,3 +36,17 @@ export interface RoomType {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BookingType {
+  _id: string;
+  user: UserType;
+  room: RoomType;
+  checkInDate: string;
+  checkOutDate: string; 
+  totalAmount: number;
+  hotel: HotelType;
+  totalDays: number;
+  paymentId: string;
+  createdAt: string;
+  updatedAt: string;
+}
