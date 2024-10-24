@@ -47,6 +47,7 @@ export interface BookingType {
   hotel: HotelType;
   totalDays: number;
   paymentId: string;
+  bookingStatus: 'Booked' | 'Cancelled'
   createdAt: string;
   updatedAt: string;
 }
