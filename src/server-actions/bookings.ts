@@ -66,7 +66,7 @@ export const BookRoom = async (payload: any) => {
     payload.user = userResponse.data._id;
     const booking = new BookingModel(payload);
     await booking.save();
-
+    revalidatePath("/user/bookings");
     return{
       success: true,
     }
